@@ -25,30 +25,26 @@ class AuthRepositoryImpl implements AuthRepository {
           .doc(authResult.user!.uid)
           .set({
         'email': email,
-        'groups': [],
-        'groupRequests': [],
         'uid': authResult.user!.uid,
         'displayName': username,
         'emailVerified': false,
-        'photoUrl': '',
       });
+      return;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        throw Exception('This password is too weak');
-      } else if (e.code == 'email-already-in-use') {
-        throw Exception('This account already exists');
-      }
+      throw e.message.toString();
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
   @override
-  Future<UserCredential> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     try {
-      final user = await _firebaseAuth.signInWithEmailAndPassword(
+      await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return user;
+      return;
+    } on FirebaseAuthException catch (e) {
+      throw e.message.toString();
     } catch (e) {
       throw Exception(e.toString());
     }

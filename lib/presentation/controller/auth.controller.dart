@@ -7,6 +7,8 @@ class AuthController extends GetxController {
 
   AuthController(this.authUseCase);
 
+  final isLogin = RxBool(true);
+  final isLoading = RxBool(false);
   final loginFormKey = GlobalKey<FormState>();
   final signupFormKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -15,22 +17,25 @@ class AuthController extends GetxController {
 
   Future<void> login() async {
     try {
+      isLoading.value = true;
+
       final bool isValid = loginFormKey.currentState!.validate();
-      if (!isValid) {
-        Get.snackbar('Please try again.',
-            'Either your email or your password is incorrect.');
-        return;
-      }
+      if (!isValid) return;
 
       await authUseCase.login(emailController.text, passwordController.text);
+      isLoading.value = false;
+      return;
     } catch (e) {
-      Get.snackbar('Please try again.', 'You cannot put empty values.');
-      throw e.toString();
+      Get.snackbar('Please try again.', e.toString());
+      isLoading.value = false;
+      throw Exception(e.toString());
     }
   }
 
   Future<void> signUp() async {
     try {
+      isLoading.value = true;
+
       final bool isValid = signupFormKey.currentState!.validate();
       if (!isValid) return;
 
@@ -39,7 +44,11 @@ class AuthController extends GetxController {
         password: passwordController.text,
         username: usernameController.text,
       );
+      isLoading.value = false;
+      return;
     } catch (e) {
+      Get.snackbar('Error', e.toString());
+      isLoading.value = false;
       throw Exception(e.toString());
     }
   }

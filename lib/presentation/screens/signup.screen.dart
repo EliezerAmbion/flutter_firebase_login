@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_login/config/app_pages.dart';
 import 'package:flutter_firebase_login/presentation/controller/auth.controller.dart';
 import 'package:flutter_firebase_login/presentation/widgets/custom_form_button.widget.dart';
 import 'package:flutter_firebase_login/presentation/widgets/custom_form_field.widget.dart';
@@ -111,10 +110,11 @@ class SignUpScreen extends GetView<AuthController> {
                           ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.pushReplacementNamed(
-                            Get.context!,
-                            Routes.loginScreen,
-                          );
+                          controller.isLogin.value = true;
+                          controller.isLoading.value = false;
+                          controller.emailController.text = '';
+                          controller.passwordController.text = '';
+                          controller.usernameController.text = '';
                         },
                     ),
                   ],

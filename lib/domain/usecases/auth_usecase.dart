@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firebase_login/data/repositories/auth_repository_impl.dart';
 
 class AuthUseCase {
@@ -18,7 +17,7 @@ class AuthUseCase {
     );
   }
 
-  Future<UserCredential> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     return await repository.login(email, password);
   }
 }
