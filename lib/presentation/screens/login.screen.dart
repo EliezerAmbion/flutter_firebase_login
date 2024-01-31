@@ -1,27 +1,21 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_login/config/app_pages.dart';
+import 'package:flutter_firebase_login/presentation/controller/auth.controller.dart';
 import 'package:flutter_firebase_login/presentation/widgets/custom_form_button.widget.dart';
 import 'package:flutter_firebase_login/presentation/widgets/custom_form_field.widget.dart';
+import 'package:flutter_firebase_login/presentation/widgets/social_media_button.dart';
+import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends GetView<AuthController> {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final loginController = TextEditingController();
-    final passwordController = TextEditingController();
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Login',
-          style: Theme.of(context)
-              .textTheme
-              .headline2
-              ?.copyWith(color: Colors.white),
-        ),
-      ),
       body: SafeArea(
         child: Form(
+          key: controller.loginFormKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -35,36 +29,66 @@ class LoginScreen extends StatelessWidget {
                 'Login to continue',
                 style: Theme.of(context).textTheme.headline5,
               ),
+
               const SizedBox(height: 30),
+
+              // email
               CustomFormFieldWidget(
                 labelText: 'Enter your email',
-                controller: loginController,
-                validator: (value) {
-                  if (value!.isEmpty || !value.contains('@')) {
-                    return 'Please enter a valid email address!';
-                  }
-                  return null;
-                },
+                controller: controller.emailController,
                 suffixIcon: Icons.email_outlined,
                 horizontalPadding: 25,
                 autoFill: AutofillHints.email,
               ),
+
+              // password
               CustomFormFieldWidget(
                 isObscureText: true,
                 labelText: 'Enter your password',
-                controller: passwordController,
-                validator: (value) {
-                  if (value!.isEmpty || value.length < 7) {
-                    return 'Password must be at least 7 chars long';
-                  }
-                  return null;
-                },
+                controller: controller.passwordController,
                 suffixIcon: Icons.lock_outline,
                 horizontalPadding: 25,
                 autoFill: AutofillHints.password,
               ),
+
               const SizedBox(height: 20),
-              CustomFormButtonWidget(onPressed: () {}, text: 'Login'),
+
+              CustomFormButtonWidget(
+                onPressed: () => controller.login(),
+                text: 'Login',
+              ),
+
+              const SizedBox(height: 20),
+
+              const SocialMediaButton(imagePath: 'assets/images/google.png'),
+
+              const SizedBox(height: 40),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Not a Member? ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                    children: [
+                      TextSpan(
+                        text: 'Register Now!',
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pushReplacementNamed(
+                              Get.context!,
+                              Routes.signUpScreen,
+                            );
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

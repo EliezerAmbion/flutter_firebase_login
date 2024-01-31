@@ -14,7 +14,7 @@ class CustomFormFieldWidget extends StatelessWidget {
     required this.labelText,
     required this.controller,
     this.isObscureText = false,
-    required this.validator,
+    this.validator,
     required this.suffixIcon,
     required this.horizontalPadding,
     required this.autoFill,
