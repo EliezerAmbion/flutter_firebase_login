@@ -13,9 +13,9 @@ ThemeData theme() {
 
 AppBarTheme appBarTheme() {
   return const AppBarTheme(
-    iconTheme: IconThemeData(color: Colors.black),
+    iconTheme: IconThemeData(color: Colors.white),
     centerTitle: true,
-    backgroundColor: Colors.black87,
+    backgroundColor: Colors.teal,
     elevation: 0,
   );
 }
@@ -57,7 +57,7 @@ TextTheme textTheme() {
     headline3: TextStyle(
       fontFamily: 'MontBold',
       color: Colors.black,
-      fontSize: 18,
+      fontSize: 22,
     ),
     headline4: TextStyle(
       fontFamily: 'MontReg',

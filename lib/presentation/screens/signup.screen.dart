@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_login/presentation/controller/auth.controller.dart';
 import 'package:flutter_firebase_login/presentation/widgets/custom_form_button.widget.dart';
 import 'package:flutter_firebase_login/presentation/widgets/custom_form_field.widget.dart';
+import 'package:flutter_firebase_login/presentation/widgets/social_media_button.dart';
 import 'package:get/get.dart';
 
 class SignUpScreen extends GetView<AuthController> {
@@ -20,14 +21,14 @@ class SignUpScreen extends GetView<AuthController> {
             children: [
               // Lets create an account
               Text(
-                'Create new Account',
+                'Sign up',
                 style: Theme.of(context).textTheme.headline3,
               ),
 
               const SizedBox(height: 10),
 
               Text(
-                'Let\'s create one for you!',
+                'Create your account',
                 style: Theme.of(context).textTheme.headline5,
               ),
 
@@ -43,27 +44,6 @@ class SignUpScreen extends GetView<AuthController> {
                 validator: (value) {
                   if (value!.isEmpty || !value.contains('@')) {
                     return 'Please enter a valid email address!';
-                  }
-                  return null;
-                },
-              ),
-
-              // email field
-              CustomFormFieldWidget(
-                labelText: 'Username',
-                controller: controller.usernameController,
-                suffixIcon: Icons.person_outline,
-                horizontalPadding: 25,
-                autoFill: AutofillHints.username,
-                validator: (value) {
-                  const min = 4;
-                  const max = 12;
-
-                  if (value!.isEmpty || value.length < min) {
-                    return 'Username must be at least $min characters.';
-                  }
-                  if (value.length > max) {
-                    return 'Username must not exceed $max characters.';
                   }
                   return null;
                 },
@@ -87,13 +67,19 @@ class SignUpScreen extends GetView<AuthController> {
                 },
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
 
               // button
               CustomFormButtonWidget(
                 onPressed: () => controller.signUp(),
                 text: 'SIGNUP',
               ),
+
+              const SizedBox(height: 25),
+
+              SocialMediaButton(
+                  onTap: () => controller.signInWithGoogle(),
+                  imagePath: 'assets/images/google.png'),
 
               const SizedBox(height: 40),
               RichText(
@@ -111,10 +97,7 @@ class SignUpScreen extends GetView<AuthController> {
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           controller.isLogin.value = true;
-                          controller.isLoading.value = false;
-                          controller.emailController.text = '';
-                          controller.passwordController.text = '';
-                          controller.usernameController.text = '';
+                          controller.clearValues();
                         },
                     ),
                   ],
