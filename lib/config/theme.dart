@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData theme() {
   return ThemeData(
-    scaffoldBackgroundColor: Colors.grey.shade200,
+    scaffoldBackgroundColor: Colors.white70,
     fontFamily: 'MontReg',
     appBarTheme: appBarTheme(),
     textTheme: textTheme(),
@@ -45,13 +45,14 @@ TextTheme textTheme() {
     // header text theme
     headline1: TextStyle(
       fontFamily: 'MontBold',
-      color: Colors.black,
-      fontSize: 26,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+      fontSize: 30,
     ),
     headline2: TextStyle(
       fontFamily: 'MontBold',
       color: Colors.black,
-      fontSize: 20,
+      fontSize: 26,
     ),
     headline3: TextStyle(
       fontFamily: 'MontBold',

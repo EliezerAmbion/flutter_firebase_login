@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_login/config/keys.dart';
 import 'package:flutter_firebase_login/domain/usecases/auth_usecase.dart';
 import 'package:get/get.dart';
+import 'package:weather/weather.dart';
 
 class AuthController extends GetxController {
   final AuthUseCase authUseCase;
@@ -15,19 +17,40 @@ class AuthController extends GetxController {
   final passwordController = TextEditingController();
   final usernameController = TextEditingController();
 
+  Rxn<Weather?> weather = Rxn<Weather>(null);
+
+  @override
+  void onInit() async {
+    super.onInit();
+    await fetchWeather();
+  }
+
+  Future<void> fetchWeather() async {
+    isLoading.value = true;
+    try {
+      final WeatherFactory wf = WeatherFactory(OPEN_WEATHER_APIKEY);
+      final cityWeather = await wf.currentWeatherByCityName('Pasay');
+      weather.value = cityWeather;
+
+      debugPrint('***(36): auth.controller***\n===> ${weather.value} <===');
+
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> login() async {
     try {
-      isLoading.value = true;
-
       final bool isValid = loginFormKey.currentState!.validate();
       if (!isValid) return;
 
-      await authUseCase.login(emailController.text, passwordController.text);
-      isLoading.value = false;
+      authUseCase.login(emailController.text, passwordController.text);
+
       return;
     } catch (e) {
       Get.snackbar('Please try again.', e.toString());
-      isLoading.value = false;
       throw Exception(e.toString());
     }
   }
