@@ -23,7 +23,6 @@ class AuthController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await fetchWeather();
     clearValues();
   }
 
@@ -86,6 +85,7 @@ class AuthController extends GetxController {
 
       await authUseCase.login(emailController.text, passwordController.text);
 
+      await fetchWeather();
       isLoading.value = false;
 
       return;
@@ -109,6 +109,7 @@ class AuthController extends GetxController {
         password: passwordController.text,
       );
 
+      await fetchWeather();
       isLoading.value = false;
 
       return;
@@ -122,7 +123,13 @@ class AuthController extends GetxController {
 
   Future<void> signInWithGoogle() async {
     try {
+      isLoading.value = true;
       await authUseCase.signInWithGoogle();
+
+      await fetchWeather();
+      isLoading.value = false;
+
+      return;
     } catch (e) {
       throw Exception(e.toString());
     }
