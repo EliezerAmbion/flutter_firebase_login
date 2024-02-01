@@ -78,7 +78,8 @@ class LoginScreen extends GetView<AuthController> {
 
                       const SizedBox(height: 20),
 
-                      const SocialMediaButton(
+                      SocialMediaButton(
+                          onTap: () => controller.signInWithGoogle(),
                           imagePath: 'assets/images/google.png'),
 
                       const SizedBox(height: 40),

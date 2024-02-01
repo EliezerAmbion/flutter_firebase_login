@@ -52,4 +52,12 @@ class AuthController extends GetxController {
       throw Exception(e.toString());
     }
   }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      await authUseCase.signInWithGoogle();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
